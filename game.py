@@ -9,10 +9,13 @@ SPRITE_SCALING_PLAYER = 0.35
 SCREEN_WIDTH = 375
 SCREEN_HEIGHT = 667
 
-"""
-class Platform(arcade.Sprite):
+PLAYER_MOVEMENT_SPEED = 5
 
-    def update(self):
+"""
+class Player(arcade.Sprite):
+
+    def __init__(self):
+        super().__init__()
 """
 
 class MyGame(arcade.Window):
@@ -66,10 +69,10 @@ class MyGame(arcade.Window):
 
     def on_key_press(self, key, modifiers):
         """ Called whenever a user presses a key """
-        if key == arcade.key.LEFT:
-            self.player_sprite.change_x = -5
-        elif key == arcade.key.RIGHT:
-            self.player_sprite.change_x = 5
+        if key == arcade.key.A:
+            self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
+        elif key == arcade.key.D:
+            self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
 
     def on_key_release(self, key, modifiers):
         """ Called whenever a user releases a key. """
