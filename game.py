@@ -11,12 +11,22 @@ SCREEN_HEIGHT = 667
 
 PLAYER_MOVEMENT_SPEED = 5
 
-"""
+
 class Player(arcade.Sprite):
 
-    def __init__(self):
-        super().__init__()
-"""
+    def __init__(self, filename, sprite_scaling):
+        super().__init__(filename, sprite_scaling)
+
+        self.x = 0
+        self.y = 0
+        self.change_x = 0
+        self.change_y = 0
+        self.velocity = 10
+        self.gravity = 5
+
+    def update(self):
+
+
 
 class MyGame(arcade.Window):
     """ Custom window class """
@@ -50,11 +60,11 @@ class MyGame(arcade.Window):
         self.score = 0
 
         # Setting up the player
-        self.player_sprite = arcade.Sprite("images/player.png", SPRITE_SCALING_PLAYER)
-        self.player_sprite.center_x = 50
-        self.player_sprite.center_y = 150
-        # self.player_sprite.change_x = 0
-        # self.player_sprite.change_y = 0
+        self.player_sprite = Player("images/player.png", SPRITE_SCALING_PLAYER)
+        self.player_sprite.x = 50
+        self.player_sprite.y = 150
+        self.player_sprite.change_x = 0
+        self.player_sprite.change_y = 0
         self.player_list.append(self.player_sprite)
 
     def on_draw(self):
@@ -70,7 +80,7 @@ class MyGame(arcade.Window):
     def on_key_press(self, key, modifiers):
         """ Called whenever a user presses a key """
         if key == arcade.key.A:
-            self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
+            self.player_sprite.change = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.D:
             self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
 
