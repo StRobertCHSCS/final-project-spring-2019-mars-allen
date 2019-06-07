@@ -4,7 +4,7 @@ import arcade
 import random
 
 # --- Constants ---
-SPRITE_SCALING_PLAYER = 0.35
+SPRITE_SCALING_PLAYER = 0.18
 
 SCREEN_WIDTH = 375
 SCREEN_HEIGHT = 667
@@ -17,15 +17,23 @@ class Player(arcade.Sprite):
     def __init__(self, filename, sprite_scaling):
         super().__init__(filename, sprite_scaling)
 
-        self.x = 0
-        self.y = 0
-        self.change_x = 0
-        self.change_y = 0
-        self.velocity = 10
-        self.gravity = 5
+        self.center_x = 0
+        self.center_y = 0
+        self.dx = 10
+        self.dy = 10
+        self.gravity = 10
 
     def update(self):
+        self.center_x += self.dx
+        self.center_y += self.dy
 
+        if self.GAME_STARTED:
+            self.center_y -= self.gravity
+
+        if self.center_x > SCREEN_WIDTH + 50:
+            self.center_x = -50
+        elif self.center_x < -50:
+            self.center_x = SCREEN_WIDTH + 50
 
 
 class MyGame(arcade.Window):
@@ -35,10 +43,10 @@ class MyGame(arcade.Window):
         """ Initializer """
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Doodle Jump")
 
+        self.GAME_STARTED = None
+
         # Variables that will hold sprite lists
         self.player_list = None
-        self.platform_list = None
-        self.enemy_list = None
 
         # Setting up player info
         self.player_sprite = None
@@ -54,40 +62,46 @@ class MyGame(arcade.Window):
 
         # Sprite Lists
         self.player_list = arcade.SpriteList()
-        self.platform_list = arcade.SpriteList()
 
         # Score
         self.score = 0
 
         # Setting up the player
-        self.player_sprite = Player("images/player.png", SPRITE_SCALING_PLAYER)
-        self.player_sprite.x = 50
-        self.player_sprite.y = 150
-        self.player_sprite.change_x = 0
-        self.player_sprite.change_y = 0
+        self.player_sprite = Player("images/magikarp.gif", SPRITE_SCALING_PLAYER)
+        self.player_sprite.center_x = 50
+        self.player_sprite.center_y = 150
+        self.player_sprite.dx = 0
+        self.player_sprite.dy = 0
+        self.player_sprite.GAME_STARTED = False
         self.player_list.append(self.player_sprite)
 
     def on_draw(self):
         arcade.start_render()
         self.player_list.draw()
 
-    """
-    def update(self):
-        self.player_sprite.center_x += self.player_sprite.change_x
-        self.player_sprite.center_y += self.player_sprite.change_y
-    """
+        # output = f"Score: {self.score}"
+        # arcade.draw_text(output, 10, 20, arcade.color.BLACK, 14)
 
     def on_key_press(self, key, modifiers):
         """ Called whenever a user presses a key """
+
+        if key == arcade.key.SPACE:
+            self.player_sprite.GAME_STARTED = True
+
         if key == arcade.key.A:
-            self.player_sprite.change = -PLAYER_MOVEMENT_SPEED
+            self.player_sprite.dx = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.D:
-            self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
+            self.player_sprite.dx = PLAYER_MOVEMENT_SPEED
 
     def on_key_release(self, key, modifiers):
         """ Called whenever a user releases a key. """
-        if key == arcade.key.LEFT or key == arcade.key.RIGHT:
-            self.player_sprite.change_x = 0
+
+        if key == arcade.key.A or key == arcade.key.D:
+            self.player_sprite.dx = 0
+
+    def update(self, delta_time):
+
+        self.player_list.update()
 
 
 def main():
