@@ -10,6 +10,8 @@ SCREEN_WIDTH = 375
 SCREEN_HEIGHT = 667
 
 PLAYER_MOVEMENT_SPEED = 5
+GRAVITY = 1.5
+PLAYER_JUMP_SPEED = 10
 
 
 class Player(arcade.Sprite):
@@ -51,6 +53,9 @@ class MyGame(arcade.Window):
         # Setting up player info
         self.player_sprite = None
         self.score = 0
+
+        # physics
+        self.physics_engine = None
 
         # Hide mouse cursor
         # self.set_mouse_visible(False)
