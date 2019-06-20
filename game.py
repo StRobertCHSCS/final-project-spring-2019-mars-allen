@@ -8,6 +8,7 @@ SPRITE_SCALING_PLAYER = 0.15
 
 SCREEN_WIDTH = 375
 SCREEN_HEIGHT = 667
+SCREEN_TITLE = "Doodle Jump"
 
 PLAYER_MOVEMENT_SPEED = 5
 GRAVITY = 1
@@ -38,13 +39,12 @@ class Player(arcade.Sprite):
             self.center_x = SCREEN_WIDTH + 50
 
 
-
 class MyGame(arcade.Window):
     """ Custom window class """
 
     def __init__(self):
         """ Initializer """
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Doodle Jump")
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
 
         self.GAME_STARTED = None
 
@@ -58,6 +58,7 @@ class MyGame(arcade.Window):
 
         # physics
         self.physics_engine = None
+
 
         # Hide mouse cursor
         # self.set_mouse_visible(False)
@@ -97,17 +98,17 @@ class MyGame(arcade.Window):
 
             y += 90
 
-        """
         # Create the 'physics engine'
-        self.physics_engine = arcade.PhysicsEngineSimple(self.player_sprite,
-                                                         self.platform_list,
-                                                         GRAVITY)
-        """
+        self.physics_engine = arcade.PhysicsEngineSimple(self.player_sprite, self.platform_list)
 
     def on_draw(self):
         arcade.start_render()
         self.platform_list.draw()
         self.player_list.draw()
+
+
+        self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite, self.platform_list,
+                                                             gravity_constant=GRAVITY)
 
         # output = f"Score: {self.score}"
         # arcade.draw_text(output, 10, 20, arcade.color.BLACK, 14)
@@ -134,14 +135,14 @@ class MyGame(arcade.Window):
         self.player_list.update()
         self.platform_list.update()
 
-        # self.physics_engine.update()
-
         platform_hit_list = arcade.check_for_collision_with_list(self.player_sprite,
                                                                  self.platform_list)
 
         for platform in platform_hit_list:
             self.player_sprite.dy = PLAYER_JUMP_SPEED
             self.score += 1
+
+        self.physics_engine.update()
 
 
 def main():
