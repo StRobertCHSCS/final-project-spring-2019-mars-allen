@@ -8,11 +8,13 @@ SPRITE_SCALING_PLAYER = 0.15
 
 SCREEN_WIDTH = 375
 SCREEN_HEIGHT = 667
-SCREEN_TITLE = "Doodle Jump"
 
 PLAYER_MOVEMENT_SPEED = 5
 GRAVITY = 1
 PLAYER_JUMP_SPEED = 10
+
+TITLE_SCREEN = 1
+GAME_START = 2
 
 
 class Player(arcade.Sprite):
@@ -44,7 +46,7 @@ class MyGame(arcade.Window):
 
     def __init__(self):
         """ Initializer """
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Doodle Jump")
 
         self.GAME_STARTED = None
 
@@ -58,6 +60,7 @@ class MyGame(arcade.Window):
 
         # physics
         self.physics_engine = None
+
 
 
         # Hide mouse cursor
