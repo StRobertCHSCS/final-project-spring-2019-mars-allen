@@ -54,7 +54,7 @@ class MyGame(arcade.Window):
 
     def __init__(self):
         """ Initializer """
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Doodle Jump")
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Magikarp Jump")
 
         # sprite lists that will hold sprites
         self.player_list = None
